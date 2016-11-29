@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FFBE TM Fuse Unit Calculator</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <div id="app" v-cloak>
+    <h1>FFBE TM Fuse Unit Calculator</h1>
+
+    <h3>Fuse Unit TM Progress</h3>
+    <p>
+      Total units:
+      <select v-model="totalUnits" v-on:change="onTotalUnitsChange($event)">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </p>
+    <ol class="unit-list">
+      <li v-for="n in totalUnits">
+        <input type="text"
+               class="unit-tm-progress"
+               v-bind:placeholder="n"
+               v-bind:value="tmProgress[n - 1]"
+               v-on:keyup="onInputChange($event, n - 1)" />
+      </li>
+      <li><strong>Total:</strong> {{tmProgressTotal.toFixed(1)}}</li>
+    </ol>
+    <div><button class="btn-calculate" v-on:click="onCalculateClick">Calculate</button></div>
+
+    <h5>Result - TM progress per units need to fuse togather</h5>
+    <div v-if="result.length > 0" class="result" v-bind:class="{ active: onProcessFinished }">
+      <span class="result-item" v-for="item in result">{{item.toFixed(1)}}</span>
+      <table class="result-more-info">
+        <tr>
+          <td class="col-label">Total:</td>
+          <td>{{resultTotal.toFixed(1)}}</td>
+        </tr>
+        <tr>
+          <td class="col-label">Bonus:</td>
+          <td>{{resultBonus.toFixed(1)}}</td>
+        </tr>
+        <tr>
+          <td class="col-label">Grand Total:</td>
+          <td>{{(resultTotal + resultBonus).toFixed(1)}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div v-if="debug" class="__debug">
+      <h5 class="__debug-title">Debug</h5>
+      <pre>{{$data}}</pre>
+    </div>
+  </div>
+
+
+  <script src="vue.js"></script>
+  <script src="app.js"></script>
+
+
+</body>
+</html>
